@@ -3,5 +3,4 @@ _.file = ".env"
 
 [tools]
 elixir = "1.19.3-otp-28"
-elixir-ls = "0.30.0"
 erlang = "28.1.1"

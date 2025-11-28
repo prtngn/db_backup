@@ -1,0 +1,18 @@
+FROM hexpm/elixir:1.19.2-erlang-28.1.1-alpine-3.22.2
+
+RUN apk --no-cache --update-cache --available upgrade && \
+  apk add --no-cache --update-cache \
+  git make alpine-sdk
+
+RUN apk --no-cache --update-cache --available upgrade && \
+  apk add --no-cache --update-cache \
+  bash curl musl musl-utils musl-locales tzdata ca-certificates \
+  libstdc++ openssl pcre zlib && \
+  update-ca-certificates --fresh
+
+WORKDIR /build
+
+RUN mix local.hex --force
+RUN mix deps.get
+ENV MIX_ENV=prod
+RUN mix release
