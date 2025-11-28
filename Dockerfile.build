@@ -13,6 +13,3 @@ RUN apk --no-cache --update-cache --available upgrade && \
 WORKDIR /build
 
 RUN mix local.hex --force
-RUN mix deps.get
-ENV MIX_ENV=prod
-RUN mix release
