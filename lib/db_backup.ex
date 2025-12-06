@@ -9,7 +9,7 @@ defmodule DbBackup do
   @spec run() :: :ok | {:error, term()}
   def run do
     config = Application.get_env(:db_backup, __MODULE__, [])
-    ts = DateTime.utc_now() |> Calendar.strftime("%Y%m%d-%H%M%S")
+    ts = DateTime.utc_now() |> Calendar.strftime("%Y/%m/%d/%H%M%S")
 
     with {:ok, dbs} <- list_databases(config),
          :ok <- process_all_databases(dbs, ts, config) do
@@ -35,7 +35,7 @@ defmodule DbBackup do
   end
 
   defp process_database(db, ts, config) do
-    key = Path.join(config[:s3_path_prefix], ["#{ts}/#{db}.dump.gpg"])
+    key = Path.join(config[:s3_path_prefix], ["#{ts}-#{db}.dump.gpg"])
     Logger.info("Starting backup for database: #{db}")
 
     cmd = build_pipeline_cmd(db, config)
